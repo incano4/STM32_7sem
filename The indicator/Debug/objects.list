@@ -1,0 +1,2 @@
+"./Inc/stm32f10x.o"
+"./Startup/startup_stm32f103rbtx.o"

@@ -1,0 +1,8 @@
+../Src/main.c:4:6:init_portC	4	static
+../Src/main.c:35:6:init_portB	4	static
+../Src/main.c:63:6:init_ADC	8	static
+../Src/main.c:79:6:disp	16	static
+../Src/main.c:131:6:indicator	16	static
+../Src/main.c:151:10:ADC_proc	16	static
+../Src/main.c:159:5:main	8	static
+../Src/main.c:210:6:delay	24	static

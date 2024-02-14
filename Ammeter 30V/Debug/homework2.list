@@ -1,0 +1,466 @@
+
+homework2.elf:     file format elf32-littlearm
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .isr_vector   00000130  08000000  08000000  00010000  2**0
+                  CONTENTS, ALLOC, LOAD, READONLY, DATA
+  1 .text         00000270  08000130  08000130  00010130  2**2
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  2 .rodata       00000000  080003a0  080003a8  000103a8  2**0
+                  CONTENTS, ALLOC, LOAD, DATA
+  3 .ARM.extab    00000000  080003a0  080003a0  000103a8  2**0
+                  CONTENTS
+  4 .ARM          00000000  080003a0  080003a0  000103a8  2**0
+                  CONTENTS
+  5 .preinit_array 00000000  080003a0  080003a8  000103a8  2**0
+                  CONTENTS, ALLOC, LOAD, DATA
+  6 .init_array   00000004  080003a0  080003a0  000103a0  2**2
+                  CONTENTS, ALLOC, LOAD, DATA
+  7 .fini_array   00000004  080003a4  080003a4  000103a4  2**2
+                  CONTENTS, ALLOC, LOAD, DATA
+  8 .data         00000000  20000000  20000000  000103a8  2**0
+                  CONTENTS, ALLOC, LOAD, DATA
+  9 .bss          0000001c  20000000  080003a8  00020000  2**2
+                  ALLOC
+ 10 ._user_heap_stack 00000604  2000001c  080003a8  0002001c  2**0
+                  ALLOC
+ 11 .ARM.attributes 00000029  00000000  00000000  000103a8  2**0
+                  CONTENTS, READONLY
+ 12 .debug_info   0000040f  00000000  00000000  000103d1  2**0
+                  CONTENTS, READONLY, DEBUGGING, OCTETS
+ 13 .debug_abbrev 0000018c  00000000  00000000  000107e0  2**0
+                  CONTENTS, READONLY, DEBUGGING, OCTETS
+ 14 .debug_aranges 00000080  00000000  00000000  00010970  2**3
+                  CONTENTS, READONLY, DEBUGGING, OCTETS
+ 15 .debug_ranges 00000068  00000000  00000000  000109f0  2**3
+                  CONTENTS, READONLY, DEBUGGING, OCTETS
+ 16 .debug_macro  0000ff67  00000000  00000000  00010a58  2**0
+                  CONTENTS, READONLY, DEBUGGING, OCTETS
+ 17 .debug_line   000006e2  00000000  00000000  000209bf  2**0
+                  CONTENTS, READONLY, DEBUGGING, OCTETS
+ 18 .debug_str    000545e0  00000000  00000000  000210a1  2**0
+                  CONTENTS, READONLY, DEBUGGING, OCTETS
+ 19 .comment      00000050  00000000  00000000  00075681  2**0
+                  CONTENTS, READONLY
+ 20 .debug_frame  00000154  00000000  00000000  000756d4  2**2
+                  CONTENTS, READONLY, DEBUGGING, OCTETS
+
+Disassembly of section .text:
+
+08000130 <__do_global_dtors_aux>:
+ 8000130:	b510      	push	{r4, lr}
+ 8000132:	4c05      	ldr	r4, [pc, #20]	; (8000148 <__do_global_dtors_aux+0x18>)
+ 8000134:	7823      	ldrb	r3, [r4, #0]
+ 8000136:	b933      	cbnz	r3, 8000146 <__do_global_dtors_aux+0x16>
+ 8000138:	4b04      	ldr	r3, [pc, #16]	; (800014c <__do_global_dtors_aux+0x1c>)
+ 800013a:	b113      	cbz	r3, 8000142 <__do_global_dtors_aux+0x12>
+ 800013c:	4804      	ldr	r0, [pc, #16]	; (8000150 <__do_global_dtors_aux+0x20>)
+ 800013e:	f3af 8000 	nop.w
+ 8000142:	2301      	movs	r3, #1
+ 8000144:	7023      	strb	r3, [r4, #0]
+ 8000146:	bd10      	pop	{r4, pc}
+ 8000148:	20000000 	.word	0x20000000
+ 800014c:	00000000 	.word	0x00000000
+ 8000150:	08000388 	.word	0x08000388
+
+08000154 <frame_dummy>:
+ 8000154:	b508      	push	{r3, lr}
+ 8000156:	4b03      	ldr	r3, [pc, #12]	; (8000164 <frame_dummy+0x10>)
+ 8000158:	b11b      	cbz	r3, 8000162 <frame_dummy+0xe>
+ 800015a:	4903      	ldr	r1, [pc, #12]	; (8000168 <frame_dummy+0x14>)
+ 800015c:	4803      	ldr	r0, [pc, #12]	; (800016c <frame_dummy+0x18>)
+ 800015e:	f3af 8000 	nop.w
+ 8000162:	bd08      	pop	{r3, pc}
+ 8000164:	00000000 	.word	0x00000000
+ 8000168:	20000004 	.word	0x20000004
+ 800016c:	08000388 	.word	0x08000388
+
+08000170 <init_portC>:
+#include "main.h"
+
+
+void init_portC(void) {
+ 8000170:	b480      	push	{r7}
+ 8000172:	af00      	add	r7, sp, #0
+
+      //пины PC0-PC7 отвечают за сегменты индикатора
+	RCC->APB2ENR |= RCC_APB2ENR_IOPCEN; /*вкл тактирование порта с*/
+ 8000174:	4b2e      	ldr	r3, [pc, #184]	; (8000230 <init_portC+0xc0>)
+ 8000176:	699b      	ldr	r3, [r3, #24]
+ 8000178:	4a2d      	ldr	r2, [pc, #180]	; (8000230 <init_portC+0xc0>)
+ 800017a:	f043 0310 	orr.w	r3, r3, #16
+ 800017e:	6193      	str	r3, [r2, #24]
+
+	GPIOC->CRL &= ~(GPIO_CRL_CNF0|GPIO_CRL_MODE0); /*зануляем биты CRL (0000)*/
+ 8000180:	4b2c      	ldr	r3, [pc, #176]	; (8000234 <init_portC+0xc4>)
+ 8000182:	681b      	ldr	r3, [r3, #0]
+ 8000184:	4a2b      	ldr	r2, [pc, #172]	; (8000234 <init_portC+0xc4>)
+ 8000186:	f023 030f 	bic.w	r3, r3, #15
+ 800018a:	6013      	str	r3, [r2, #0]
+	GPIOC->CRL |= GPIO_CRL_MODE0; /*ставим маску 1100 - 50MHz analog mode*/  //00 осталось с предыдущей строчки, 11 - добавили только что
+ 800018c:	4b29      	ldr	r3, [pc, #164]	; (8000234 <init_portC+0xc4>)
+ 800018e:	681b      	ldr	r3, [r3, #0]
+ 8000190:	4a28      	ldr	r2, [pc, #160]	; (8000234 <init_portC+0xc4>)
+ 8000192:	f043 0303 	orr.w	r3, r3, #3
+ 8000196:	6013      	str	r3, [r2, #0]
+
+	GPIOC->CRL &= ~(GPIO_CRL_CNF1|GPIO_CRL_MODE1);
+ 8000198:	4b26      	ldr	r3, [pc, #152]	; (8000234 <init_portC+0xc4>)
+ 800019a:	681b      	ldr	r3, [r3, #0]
+ 800019c:	4a25      	ldr	r2, [pc, #148]	; (8000234 <init_portC+0xc4>)
+ 800019e:	f023 03f0 	bic.w	r3, r3, #240	; 0xf0
+ 80001a2:	6013      	str	r3, [r2, #0]
+	GPIOC->CRL |= GPIO_CRL_MODE1;
+ 80001a4:	4b23      	ldr	r3, [pc, #140]	; (8000234 <init_portC+0xc4>)
+ 80001a6:	681b      	ldr	r3, [r3, #0]
+ 80001a8:	4a22      	ldr	r2, [pc, #136]	; (8000234 <init_portC+0xc4>)
+ 80001aa:	f043 0330 	orr.w	r3, r3, #48	; 0x30
+ 80001ae:	6013      	str	r3, [r2, #0]
+
+	GPIOC->CRL &= ~(GPIO_CRL_CNF2|GPIO_CRL_MODE2);
+ 80001b0:	4b20      	ldr	r3, [pc, #128]	; (8000234 <init_portC+0xc4>)
+ 80001b2:	681b      	ldr	r3, [r3, #0]
+ 80001b4:	4a1f      	ldr	r2, [pc, #124]	; (8000234 <init_portC+0xc4>)
+ 80001b6:	f423 6370 	bic.w	r3, r3, #3840	; 0xf00
+ 80001ba:	6013      	str	r3, [r2, #0]
+	GPIOC->CRL |= GPIO_CRL_MODE2;
+ 80001bc:	4b1d      	ldr	r3, [pc, #116]	; (8000234 <init_portC+0xc4>)
+ 80001be:	681b      	ldr	r3, [r3, #0]
+ 80001c0:	4a1c      	ldr	r2, [pc, #112]	; (8000234 <init_portC+0xc4>)
+ 80001c2:	f443 7340 	orr.w	r3, r3, #768	; 0x300
+ 80001c6:	6013      	str	r3, [r2, #0]
+
+	GPIOC->CRL &= ~(GPIO_CRL_CNF3|GPIO_CRL_MODE3);
+ 80001c8:	4b1a      	ldr	r3, [pc, #104]	; (8000234 <init_portC+0xc4>)
+ 80001ca:	681b      	ldr	r3, [r3, #0]
+ 80001cc:	4a19      	ldr	r2, [pc, #100]	; (8000234 <init_portC+0xc4>)
+ 80001ce:	f423 4370 	bic.w	r3, r3, #61440	; 0xf000
+ 80001d2:	6013      	str	r3, [r2, #0]
+	GPIOC->CRL |= GPIO_CRL_MODE3;
+ 80001d4:	4b17      	ldr	r3, [pc, #92]	; (8000234 <init_portC+0xc4>)
+ 80001d6:	681b      	ldr	r3, [r3, #0]
+ 80001d8:	4a16      	ldr	r2, [pc, #88]	; (8000234 <init_portC+0xc4>)
+ 80001da:	f443 5340 	orr.w	r3, r3, #12288	; 0x3000
+ 80001de:	6013      	str	r3, [r2, #0]
+
+	GPIOC->CRL &= ~(GPIO_CRL_CNF4|GPIO_CRL_MODE4);
+ 80001e0:	4b14      	ldr	r3, [pc, #80]	; (8000234 <init_portC+0xc4>)
+ 80001e2:	681b      	ldr	r3, [r3, #0]
+ 80001e4:	4a13      	ldr	r2, [pc, #76]	; (8000234 <init_portC+0xc4>)
+ 80001e6:	f423 2370 	bic.w	r3, r3, #983040	; 0xf0000
+ 80001ea:	6013      	str	r3, [r2, #0]
+	GPIOC->CRL |= GPIO_CRL_MODE4;
+ 80001ec:	4b11      	ldr	r3, [pc, #68]	; (8000234 <init_portC+0xc4>)
+ 80001ee:	681b      	ldr	r3, [r3, #0]
+ 80001f0:	4a10      	ldr	r2, [pc, #64]	; (8000234 <init_portC+0xc4>)
+ 80001f2:	f443 3340 	orr.w	r3, r3, #196608	; 0x30000
+ 80001f6:	6013      	str	r3, [r2, #0]
+
+	GPIOC->CRL &= ~(GPIO_CRL_CNF5|GPIO_CRL_MODE5);
+ 80001f8:	4b0e      	ldr	r3, [pc, #56]	; (8000234 <init_portC+0xc4>)
+ 80001fa:	681b      	ldr	r3, [r3, #0]
+ 80001fc:	4a0d      	ldr	r2, [pc, #52]	; (8000234 <init_portC+0xc4>)
+ 80001fe:	f423 0370 	bic.w	r3, r3, #15728640	; 0xf00000
+ 8000202:	6013      	str	r3, [r2, #0]
+	GPIOC->CRL |= GPIO_CRL_MODE5;
+ 8000204:	4b0b      	ldr	r3, [pc, #44]	; (8000234 <init_portC+0xc4>)
+ 8000206:	681b      	ldr	r3, [r3, #0]
+ 8000208:	4a0a      	ldr	r2, [pc, #40]	; (8000234 <init_portC+0xc4>)
+ 800020a:	f443 1340 	orr.w	r3, r3, #3145728	; 0x300000
+ 800020e:	6013      	str	r3, [r2, #0]
+
+	GPIOC->CRL &= ~(GPIO_CRL_CNF6|GPIO_CRL_MODE6);
+ 8000210:	4b08      	ldr	r3, [pc, #32]	; (8000234 <init_portC+0xc4>)
+ 8000212:	681b      	ldr	r3, [r3, #0]
+ 8000214:	4a07      	ldr	r2, [pc, #28]	; (8000234 <init_portC+0xc4>)
+ 8000216:	f023 6370 	bic.w	r3, r3, #251658240	; 0xf000000
+ 800021a:	6013      	str	r3, [r2, #0]
+	GPIOC->CRL |= GPIO_CRL_MODE6;
+ 800021c:	4b05      	ldr	r3, [pc, #20]	; (8000234 <init_portC+0xc4>)
+ 800021e:	681b      	ldr	r3, [r3, #0]
+ 8000220:	4a04      	ldr	r2, [pc, #16]	; (8000234 <init_portC+0xc4>)
+ 8000222:	f043 7340 	orr.w	r3, r3, #50331648	; 0x3000000
+ 8000226:	6013      	str	r3, [r2, #0]
+
+//	GPIOC->CRL &= ~(GPIO_CRL_CNF7|GPIO_CRL_MODE7);
+//	GPIOC->CRL |= GPIO_CRL_MODE7;
+}
+ 8000228:	bf00      	nop
+ 800022a:	46bd      	mov	sp, r7
+ 800022c:	bc80      	pop	{r7}
+ 800022e:	4770      	bx	lr
+ 8000230:	40021000 	.word	0x40021000
+ 8000234:	40011000 	.word	0x40011000
+
+08000238 <init_portB>:
+
+
+void init_portB(void) {
+ 8000238:	b480      	push	{r7}
+ 800023a:	af00      	add	r7, sp, #0
+
+	RCC->APB2ENR |= RCC_APB2ENR_IOPBEN; /*вкл тактирование порта В*/
+ 800023c:	4b22      	ldr	r3, [pc, #136]	; (80002c8 <init_portB+0x90>)
+ 800023e:	699b      	ldr	r3, [r3, #24]
+ 8000240:	4a21      	ldr	r2, [pc, #132]	; (80002c8 <init_portB+0x90>)
+ 8000242:	f043 0308 	orr.w	r3, r3, #8
+ 8000246:	6193      	str	r3, [r2, #24]
+
+	//пин PB0 отвечает за точку 2-го индикатора
+	GPIOB->CRL &= ~(GPIO_CRL_CNF0|GPIO_CRL_MODE0);
+ 8000248:	4b20      	ldr	r3, [pc, #128]	; (80002cc <init_portB+0x94>)
+ 800024a:	681b      	ldr	r3, [r3, #0]
+ 800024c:	4a1f      	ldr	r2, [pc, #124]	; (80002cc <init_portB+0x94>)
+ 800024e:	f023 030f 	bic.w	r3, r3, #15
+ 8000252:	6013      	str	r3, [r2, #0]
+	GPIOB->CRL |= GPIO_CRL_MODE0;
+ 8000254:	4b1d      	ldr	r3, [pc, #116]	; (80002cc <init_portB+0x94>)
+ 8000256:	681b      	ldr	r3, [r3, #0]
+ 8000258:	4a1c      	ldr	r2, [pc, #112]	; (80002cc <init_portB+0x94>)
+ 800025a:	f043 0303 	orr.w	r3, r3, #3
+ 800025e:	6013      	str	r3, [r2, #0]
+
+	//пины PB1-PB3 отвечают за землю индикаторов
+	GPIOB->CRL &= ~(GPIO_CRL_CNF1|GPIO_CRL_MODE1);
+ 8000260:	4b1a      	ldr	r3, [pc, #104]	; (80002cc <init_portB+0x94>)
+ 8000262:	681b      	ldr	r3, [r3, #0]
+ 8000264:	4a19      	ldr	r2, [pc, #100]	; (80002cc <init_portB+0x94>)
+ 8000266:	f023 03f0 	bic.w	r3, r3, #240	; 0xf0
+ 800026a:	6013      	str	r3, [r2, #0]
+	GPIOB->CRL |= GPIO_CRL_MODE1;
+ 800026c:	4b17      	ldr	r3, [pc, #92]	; (80002cc <init_portB+0x94>)
+ 800026e:	681b      	ldr	r3, [r3, #0]
+ 8000270:	4a16      	ldr	r2, [pc, #88]	; (80002cc <init_portB+0x94>)
+ 8000272:	f043 0330 	orr.w	r3, r3, #48	; 0x30
+ 8000276:	6013      	str	r3, [r2, #0]
+
+	GPIOB->CRL &= ~(GPIO_CRL_CNF2|GPIO_CRL_MODE2);
+ 8000278:	4b14      	ldr	r3, [pc, #80]	; (80002cc <init_portB+0x94>)
+ 800027a:	681b      	ldr	r3, [r3, #0]
+ 800027c:	4a13      	ldr	r2, [pc, #76]	; (80002cc <init_portB+0x94>)
+ 800027e:	f423 6370 	bic.w	r3, r3, #3840	; 0xf00
+ 8000282:	6013      	str	r3, [r2, #0]
+	GPIOB->CRL |= GPIO_CRL_MODE2;
+ 8000284:	4b11      	ldr	r3, [pc, #68]	; (80002cc <init_portB+0x94>)
+ 8000286:	681b      	ldr	r3, [r3, #0]
+ 8000288:	4a10      	ldr	r2, [pc, #64]	; (80002cc <init_portB+0x94>)
+ 800028a:	f443 7340 	orr.w	r3, r3, #768	; 0x300
+ 800028e:	6013      	str	r3, [r2, #0]
+
+	GPIOB->CRL &= ~(GPIO_CRL_CNF3|GPIO_CRL_MODE3);
+ 8000290:	4b0e      	ldr	r3, [pc, #56]	; (80002cc <init_portB+0x94>)
+ 8000292:	681b      	ldr	r3, [r3, #0]
+ 8000294:	4a0d      	ldr	r2, [pc, #52]	; (80002cc <init_portB+0x94>)
+ 8000296:	f423 4370 	bic.w	r3, r3, #61440	; 0xf000
+ 800029a:	6013      	str	r3, [r2, #0]
+	GPIOB->CRL |= GPIO_CRL_MODE3;
+ 800029c:	4b0b      	ldr	r3, [pc, #44]	; (80002cc <init_portB+0x94>)
+ 800029e:	681b      	ldr	r3, [r3, #0]
+ 80002a0:	4a0a      	ldr	r2, [pc, #40]	; (80002cc <init_portB+0x94>)
+ 80002a2:	f443 5340 	orr.w	r3, r3, #12288	; 0x3000
+ 80002a6:	6013      	str	r3, [r2, #0]
+
+
+
+
+	//пин PA0 отвечает за вход АЦП
+	RCC->APB2ENR |= RCC_APB2ENR_IOPAEN; /*вкл тактирование порта В*/
+ 80002a8:	4b07      	ldr	r3, [pc, #28]	; (80002c8 <init_portB+0x90>)
+ 80002aa:	699b      	ldr	r3, [r3, #24]
+ 80002ac:	4a06      	ldr	r2, [pc, #24]	; (80002c8 <init_portB+0x90>)
+ 80002ae:	f043 0304 	orr.w	r3, r3, #4
+ 80002b2:	6193      	str	r3, [r2, #24]
+	GPIOA->CRL &= ~(GPIO_CRL_CNF0|GPIO_CRL_MODE0);
+ 80002b4:	4b06      	ldr	r3, [pc, #24]	; (80002d0 <init_portB+0x98>)
+ 80002b6:	681b      	ldr	r3, [r3, #0]
+ 80002b8:	4a05      	ldr	r2, [pc, #20]	; (80002d0 <init_portB+0x98>)
+ 80002ba:	f023 030f 	bic.w	r3, r3, #15
+ 80002be:	6013      	str	r3, [r2, #0]
+}
+ 80002c0:	bf00      	nop
+ 80002c2:	46bd      	mov	sp, r7
+ 80002c4:	bc80      	pop	{r7}
+ 80002c6:	4770      	bx	lr
+ 80002c8:	40021000 	.word	0x40021000
+ 80002cc:	40010c00 	.word	0x40010c00
+ 80002d0:	40010800 	.word	0x40010800
+
+080002d4 <main>:
+	while((ADC1->SR & ADC_SR_EOC) != 0);			//Ждем окончания преобразования
+	return ADC1->DR;								//Читаем результат
+}
+
+
+int main(void) {
+ 80002d4:	b580      	push	{r7, lr}
+ 80002d6:	af00      	add	r7, sp, #0
+
+	init_portC();
+ 80002d8:	f7ff ff4a 	bl	8000170 <init_portC>
+	init_portB();
+ 80002dc:	f7ff ffac 	bl	8000238 <init_portB>
+//	init_ADC();
+
+	while(1) {
+
+		 disp_8();
+ 80002e0:	4b01      	ldr	r3, [pc, #4]	; (80002e8 <main+0x14>)
+ 80002e2:	227f      	movs	r2, #127	; 0x7f
+ 80002e4:	60da      	str	r2, [r3, #12]
+ 80002e6:	e7fb      	b.n	80002e0 <main+0xc>
+ 80002e8:	40011000 	.word	0x40011000
+
+080002ec <Reset_Handler>:
+
+  .section .text.Reset_Handler
+  .weak Reset_Handler
+  .type Reset_Handler, %function
+Reset_Handler:
+  ldr   r0, =_estack
+ 80002ec:	480d      	ldr	r0, [pc, #52]	; (8000324 <LoopForever+0x2>)
+  mov   sp, r0          /* set stack pointer */
+ 80002ee:	4685      	mov	sp, r0
+/* Call the clock system initialization function.*/
+  bl  SystemInit
+ 80002f0:	f3af 8000 	nop.w
+
+/* Copy the data segment initializers from flash to SRAM */
+  ldr r0, =_sdata
+ 80002f4:	480c      	ldr	r0, [pc, #48]	; (8000328 <LoopForever+0x6>)
+  ldr r1, =_edata
+ 80002f6:	490d      	ldr	r1, [pc, #52]	; (800032c <LoopForever+0xa>)
+  ldr r2, =_sidata
+ 80002f8:	4a0d      	ldr	r2, [pc, #52]	; (8000330 <LoopForever+0xe>)
+  movs r3, #0
+ 80002fa:	2300      	movs	r3, #0
+  b LoopCopyDataInit
+ 80002fc:	e002      	b.n	8000304 <LoopCopyDataInit>
+
+080002fe <CopyDataInit>:
+
+CopyDataInit:
+  ldr r4, [r2, r3]
+ 80002fe:	58d4      	ldr	r4, [r2, r3]
+  str r4, [r0, r3]
+ 8000300:	50c4      	str	r4, [r0, r3]
+  adds r3, r3, #4
+ 8000302:	3304      	adds	r3, #4
+
+08000304 <LoopCopyDataInit>:
+
+LoopCopyDataInit:
+  adds r4, r0, r3
+ 8000304:	18c4      	adds	r4, r0, r3
+  cmp r4, r1
+ 8000306:	428c      	cmp	r4, r1
+  bcc CopyDataInit
+ 8000308:	d3f9      	bcc.n	80002fe <CopyDataInit>
+
+/* Zero fill the bss segment. */
+  ldr r2, =_sbss
+ 800030a:	4a0a      	ldr	r2, [pc, #40]	; (8000334 <LoopForever+0x12>)
+  ldr r4, =_ebss
+ 800030c:	4c0a      	ldr	r4, [pc, #40]	; (8000338 <LoopForever+0x16>)
+  movs r3, #0
+ 800030e:	2300      	movs	r3, #0
+  b LoopFillZerobss
+ 8000310:	e001      	b.n	8000316 <LoopFillZerobss>
+
+08000312 <FillZerobss>:
+
+FillZerobss:
+  str  r3, [r2]
+ 8000312:	6013      	str	r3, [r2, #0]
+  adds r2, r2, #4
+ 8000314:	3204      	adds	r2, #4
+
+08000316 <LoopFillZerobss>:
+
+LoopFillZerobss:
+  cmp r2, r4
+ 8000316:	42a2      	cmp	r2, r4
+  bcc FillZerobss
+ 8000318:	d3fb      	bcc.n	8000312 <FillZerobss>
+
+/* Call static constructors */
+  bl __libc_init_array
+ 800031a:	f000 f811 	bl	8000340 <__libc_init_array>
+/* Call the application's entry point.*/
+  bl main
+ 800031e:	f7ff ffd9 	bl	80002d4 <main>
+
+08000322 <LoopForever>:
+
+LoopForever:
+    b LoopForever
+ 8000322:	e7fe      	b.n	8000322 <LoopForever>
+  ldr   r0, =_estack
+ 8000324:	20005000 	.word	0x20005000
+  ldr r0, =_sdata
+ 8000328:	20000000 	.word	0x20000000
+  ldr r1, =_edata
+ 800032c:	20000000 	.word	0x20000000
+  ldr r2, =_sidata
+ 8000330:	080003a8 	.word	0x080003a8
+  ldr r2, =_sbss
+ 8000334:	20000000 	.word	0x20000000
+  ldr r4, =_ebss
+ 8000338:	2000001c 	.word	0x2000001c
+
+0800033c <ADC1_2_IRQHandler>:
+ * @retval : None
+*/
+  .section .text.Default_Handler,"ax",%progbits
+Default_Handler:
+Infinite_Loop:
+  b Infinite_Loop
+ 800033c:	e7fe      	b.n	800033c <ADC1_2_IRQHandler>
+	...
+
+08000340 <__libc_init_array>:
+ 8000340:	b570      	push	{r4, r5, r6, lr}
+ 8000342:	2600      	movs	r6, #0
+ 8000344:	4d0c      	ldr	r5, [pc, #48]	; (8000378 <__libc_init_array+0x38>)
+ 8000346:	4c0d      	ldr	r4, [pc, #52]	; (800037c <__libc_init_array+0x3c>)
+ 8000348:	1b64      	subs	r4, r4, r5
+ 800034a:	10a4      	asrs	r4, r4, #2
+ 800034c:	42a6      	cmp	r6, r4
+ 800034e:	d109      	bne.n	8000364 <__libc_init_array+0x24>
+ 8000350:	f000 f81a 	bl	8000388 <_init>
+ 8000354:	2600      	movs	r6, #0
+ 8000356:	4d0a      	ldr	r5, [pc, #40]	; (8000380 <__libc_init_array+0x40>)
+ 8000358:	4c0a      	ldr	r4, [pc, #40]	; (8000384 <__libc_init_array+0x44>)
+ 800035a:	1b64      	subs	r4, r4, r5
+ 800035c:	10a4      	asrs	r4, r4, #2
+ 800035e:	42a6      	cmp	r6, r4
+ 8000360:	d105      	bne.n	800036e <__libc_init_array+0x2e>
+ 8000362:	bd70      	pop	{r4, r5, r6, pc}
+ 8000364:	f855 3b04 	ldr.w	r3, [r5], #4
+ 8000368:	4798      	blx	r3
+ 800036a:	3601      	adds	r6, #1
+ 800036c:	e7ee      	b.n	800034c <__libc_init_array+0xc>
+ 800036e:	f855 3b04 	ldr.w	r3, [r5], #4
+ 8000372:	4798      	blx	r3
+ 8000374:	3601      	adds	r6, #1
+ 8000376:	e7f2      	b.n	800035e <__libc_init_array+0x1e>
+ 8000378:	080003a0 	.word	0x080003a0
+ 800037c:	080003a0 	.word	0x080003a0
+ 8000380:	080003a0 	.word	0x080003a0
+ 8000384:	080003a4 	.word	0x080003a4
+
+08000388 <_init>:
+ 8000388:	b5f8      	push	{r3, r4, r5, r6, r7, lr}
+ 800038a:	bf00      	nop
+ 800038c:	bcf8      	pop	{r3, r4, r5, r6, r7}
+ 800038e:	bc08      	pop	{r3}
+ 8000390:	469e      	mov	lr, r3
+ 8000392:	4770      	bx	lr
+
+08000394 <_fini>:
+ 8000394:	b5f8      	push	{r3, r4, r5, r6, r7, lr}
+ 8000396:	bf00      	nop
+ 8000398:	bcf8      	pop	{r3, r4, r5, r6, r7}
+ 800039a:	bc08      	pop	{r3}
+ 800039c:	469e      	mov	lr, r3
+ 800039e:	4770      	bx	lr
